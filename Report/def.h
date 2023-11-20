@@ -9,7 +9,7 @@
 /**********************************/
 /*   Window Parameter Setting     */
 /**********************************/
-	#define PROGRAM_TITLE "Mlib for C++ Language  (ver 3.8)"   // Caption of Title bar
+	#define PROGRAM_TITLE "ColorBall Game"   // Caption of Title bar
 	#define MAINWIN_W	750	//Width of main window (in pixel)
 	#define MAINWIN_H	750		//Height of main window (in pixel)
 
