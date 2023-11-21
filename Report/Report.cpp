@@ -53,7 +53,7 @@ int main(int Number) {
 	count++; // Increment count on each iteration
 	Printf("count = %d\n", count);
 
-	while (y > -real_r) { //While()文は()内が0になるまで繰り返すので、1では無限ループ,物体がラインに到達するまで
+	while (y > -H + r) { //While()文は()内が0になるまで繰り返すので、1では無限ループ,物体がラインに到達するまで
 
 
 		//case1の処理がおわったらcase0の処理をおこなう
@@ -112,15 +112,15 @@ int main(int Number) {
 
 				if (found == 1) {
 					real_r = h*(sGW.h - 2 * r) / sGW.h; //実座標に変換
-					while (y > -real_r) {
+					while (y > -H + r) {
 						Plot_pen(0, 2, 7); //白色に設定（バックと同じ）
 						Circle(x2m(xx - r), y2n(yy - r), x2m(xx + r), y2n(yy + r), 1);        //過去の位置に描かれた円を消去
 						y = y + vy * dt - g * dt * dt / 2;  //  z座標更新
 						vy = vy - g * dt;         //  z方向速度更新
 
 						vy = vy - g * dt; // z方向速度更新
-						if (y < -real_r) { // 物体が下床に当たったとき、
-							y = -real_r;
+						if (y < -H + r) { // 物体が下床に当たったとき、
+							y = -H + r;
 						} //zは床にめり込んでいるので-hに修正
 
 						//if (x > w) { // 物体が右に当たったとき、
@@ -149,7 +149,8 @@ int main(int Number) {
 
 					}
 					found = 0;
-				
+					Plot_pen(0, 2, 1);
+					Line(0, sGW.w - 650, sGW.w, sGW.w - 650); //デッドライン
 				}
 				Refresh();        //画面更新
 			//}
