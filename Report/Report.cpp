@@ -3,6 +3,7 @@
 #include <time.h>
 #include <cstdlib>
 #define g 9.8
+int count;
 // 色と値を表す構造体
 struct ColorValue {
 	int color;
@@ -14,7 +15,7 @@ int main(int Number) {
 	double vy = 0, dt = 5e-3, vx;
 	double e = 1;
 	int resetScreen = 0; // 画面をリセットするフラグ
-	int found = 0, count = 0;
+	int found = 0;
 
 	// 色と値のペアを配列に格納
 	struct ColorValue colorValues[] = {
@@ -38,7 +39,8 @@ int main(int Number) {
 	real_r = h * (sGW.h - 2 * r) / sGW.h; //ボールの実際の半径
 		//球が下に当たったら処理を終了する
 	// ラベルを使用してswitch内でループを制御する
-
+	count++; // Increment count on each iteration
+	Printf("count = %d\n", count);
 
 	while (y > -real_r) { //While()文は()内が0になるまで繰り返すので、1では無限ループ,物体がラインに到達するまで
 
@@ -138,10 +140,8 @@ int main(int Number) {
 						nn = n; //新しいピクセル座標を過去のピクセル座標に
 					}
 					found = 0;
-					count += 1;
-					//過去のPrintを消去
-					Printf("count:%d",count);
 				}
+
 				Refresh();        //画面更新
 			//}
 			//
