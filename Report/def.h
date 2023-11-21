@@ -10,8 +10,8 @@
 /*   Window Parameter Setting     */
 /**********************************/
 	#define PROGRAM_TITLE "ColorBall Game"   // Caption of Title bar
-	#define MAINWIN_W	750	//Width of main window (in pixel)
-	#define MAINWIN_H	750		//Height of main window (in pixel)
+	#define MAINWIN_W	800	//Width of main window (in pixel)
+	#define MAINWIN_H	800		//Height of main window (in pixel)
 
 	#define PB_NUM		2		//Number of used push button
 	#define CK_NUM		0		//Number of used check box

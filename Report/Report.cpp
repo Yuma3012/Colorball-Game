@@ -2,8 +2,19 @@
 #include "mlib.h"
 #include <time.h>
 #include <cstdlib>
+//MAINWIN_W=1200,MAINWIN_H=800のとき
+#define W 133
+#define H 100
 #define g 9.8
 int count;
+int x2m(double x) {//ピクセル座標への変換
+	return sGW.w / 2 * (1 + x / W);
+}
+
+int y2n(double y) {//ピクセル座標への変換
+	return sGW.h / 2 * (1 - y / H);
+}
+
 // 色と値を表す構造体
 struct ColorValue {
 	int color;
@@ -11,7 +22,7 @@ struct ColorValue {
 };
 int main(int Number) {
 	int m, n, mm = 0, nn = 0, start_x = sGW.w / 2 * (0 / 100 + 1) , start_y = sGW.h / 10;
-	double x = 0, y = 90, w = 100, h = 100, real_r;
+	double x = 0, y = 90, w = 100, h = 100, real_r, xx = x, yy = y;//過去の座標
 	double vy = 0, dt = 5e-3, vx;
 	double e = 1;
 	int resetScreen = 0; // 画面をリセットするフラグ
@@ -19,13 +30,13 @@ int main(int Number) {
 
 	// 色と値のペアを配列に格納
 	struct ColorValue colorValues[] = {
-		//{0, 70}, //黒
-		//{1, 60}, //赤
-		//{2, 50}, //緑
-		//{3, 40}, //青ctrlk>ctrlc/uでコメントアウト
-		{4, 30}, //黄色
-		{5, 20}, //水色
-		{6, 10}  //ピンク
+		//{0, 35}, //黒
+		//{1, 30}, //赤
+		//{2, 25}, //緑
+		//{3, 20}, //青ctrlk>ctrlc/uでコメントアウト
+		{4, 15}, //黄色
+		{5, 10}, //水色
+		{6, 5}  //ピンク
 	};
 	// 乱数生成のためのシードを設定
 	srand(time(NULL));
@@ -67,33 +78,31 @@ int main(int Number) {
 				pd = GetAsyncKeyState(VK_DOWN);//下キーの状態入力
 
 				Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
-				Circle(mm - r, nn - r, mm + r, nn + r, 1);        //過去の位置に描かれた円を消去
+				Circle(x2m(xx - r), y2n(yy - r), x2m(xx + r), y2n(yy + r), 1);        //過去の位置に描かれた円を消去
 
 				Plot_pen(0, 2, 1);
 				Line(0, sGW.w - 650, sGW.w, sGW.w - 650); //デッドライン
 				if (pl < 0) {
 					x = x - 0.1;     //左キーが押されたときの処理
-					if (x < -w) {
-						x = w;
+					if (x < -(W - r)) {
+						x = W - r;
 					}
 				}
 				if (pr < 0) {
 					x = x + 0.1;     //右キーが押されたときの処理
-					if (x > w) {
-						x = -w;
+					if (x > W - r) {
+						x = -(W - r);
 					}
 				}
 
-				m = sGW.w / 2 * (x / w + 1);//実座標をピクセル座標に変換sgw960/2*(0/101)=480sGw620
-				n = sGW.h / 2 * (1 - y / h);//実座標をピクセル座標に変換620/2*(1-95/100)=291.4sGW710
 
 				Plot_pen(0, 2, color);  //緑色に指定   
-				Circle(m - r, n - r, m + r, n + r, 1);        //新しい位置に円を描画m,nは円の中心座標
+				Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
+				xx = x;   //新しいピクセル座標を過去のピクセル座標にする
+				yy = y;   //新しいピクセル座標を過去のピクセル座標にする
 
 
 
-
-				mm = m; nn = n;       //新しいピクセル座標を過去のピクセル座標にする
 
 				if (pd < 0) {
 					found = 1;
@@ -102,10 +111,10 @@ int main(int Number) {
 				}
 
 				if (found == 1) {
-					real_r = h*(sGW.h - 2 * n) / sGW.h; //実座標に変換
+					real_r = h*(sGW.h - 2 * r) / sGW.h; //実座標に変換
 					while (y > -real_r) {
 						Plot_pen(0, 2, 7); //白色に設定（バックと同じ）
-						Circle(mm - r, nn - r, mm + r, nn + r, 1); //過去の玉を消去
+						Circle(x2m(xx - r), y2n(yy - r), x2m(xx + r), y2n(yy + r), 1);        //過去の位置に描かれた円を消去
 						y = y + vy * dt - g * dt * dt / 2;  //  z座標更新
 						vy = vy - g * dt;         //  z方向速度更新
 
@@ -114,34 +123,34 @@ int main(int Number) {
 							y = -real_r;
 						} //zは床にめり込んでいるので-hに修正
 
-						if (x > w) { // 物体が右に当たったとき、
-							vx = -e * vx; // 速度に反射係数を乗算
-							x = w;
-						} //zは右にめり込んでいるのでwに修正
+						//if (x > w) { // 物体が右に当たったとき、
+						//	vx = -e * vx; // 速度に反射係数を乗算
+						//	x = w;
+						//} //zは右にめり込んでいるのでwに修正
 
 
-						if (x < -w) { // 物体が左に当たったとき、
-							vx = -e * vx; // 速度に反射係数を乗算
-							x = -w;
-						} //zは左にめり込んでいるので-wに修正
+						//if (x < -w) { // 物体が左に当たったとき、
+						//	vx = -e * vx; // 速度に反射係数を乗算
+						//	x = -w;
+						//} //zは左にめり込んでいるので-wに修正
 
 
 
-						m = sGW.w * (1 + x / w) / 2;  //実座標をピクセル座標に変換
-						n = sGW.h * (1 - y / h) / 2;     //実座標をピクセル座標に変換
-						//(z座標は上向きを正）)
 
 						Plot_pen(0, 2, color); //緑色に指定
-						Circle(m - r, n - r, m + r, n + r, 1);   //新しい位置に玉を描画
-
+						Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
 						Refresh();  //画面更新
+						xx = x;   //新しいピクセル座標を過去のピクセル座標にする
+						yy = y;   //新しいピクセル座標を過去のピクセル座標にする
 
-						mm = m; //新しいピクセル座標を過去のピクセル座標に
-						nn = n; //新しいピクセル座標を過去のピクセル座標に
+
+
+
+
 					}
 					found = 0;
+				
 				}
-
 				Refresh();        //画面更新
 			//}
 			//
