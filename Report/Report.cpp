@@ -30,12 +30,12 @@ struct Ball {
 	int r;
 	int color;
 };	
-struct Ball balls[MAX_BALLS]; // 玉の配列
+struct Ball balls[MAX_BALLS]; // 玉の配列(グローバル変数)
 int main(int Number) {
 	int m = 10, n, mm = 0, nn = 0, start_x = sGW.w / 2 * (0 / 100 + 1), start_y = sGW.h / 10;
 	double x = 0, y = 90, w = 100, h = 100, real_r, xx = x, yy = y;//過去の座標
-	double vy = 0, dt = 5e-3, vx = 0;
-	double e = 1, pp;
+	double vy=0, dt = 5e-3, vx = 0;
+	double e = 0, pp = 0; //反発係数は0
 	int resetScreen = 0; // 画面をリセットするフラグ
 	int found = 0;
 
@@ -66,8 +66,8 @@ int main(int Number) {
 // ラベルを使用してswitch内でループを制御する
 	count++; // Increment count on each iteration
 	//Printf("count = %d\n", count);
-
-	while (y > -H + r) { //While()文は()内が0になるまで繰り返すので、1では無限ループ,物体がラインに到達するまで
+	//物体の速度vyが1より小さくなるまでループ
+	while(fabs(vy) > 0.01 or vy == 0) {
 
 
 		//case1の処理がおわったらcase0の処理をおこなう
@@ -120,21 +120,22 @@ int main(int Number) {
 
 			if (pd < 0) {
 				found = 1;
+				vy = 1;
 				//Plot_pen(0, 2, color);  //緑色に指定   
 				//Circle(start_x - r, start_y - r, start_x + r, start_y + r, 1);        //新しい位置に円を描画m,nは円の中心座標
 			}
 
 			if (found == 1) {
 				real_r = h * (sGW.h - 2 * r) / sGW.h; //実座標に変換
-				while (y > -H + r) {
+				while (fabs(vy) > 0.01) { //速度が1より小さくなるまでループ
 					Plot_pen(0, 2, 7); //白色に設定（バックと同じ）
 					Circle(x2m(xx - r), y2n(yy - r), x2m(xx + r), y2n(yy + r), 1);        //過去の位置に描かれた円を消去
 					y = y + vy * dt - g * dt * dt / 2;  //  z座標更新
 					vy = vy - g * dt;         //  z方向速度更新
-
-					vy = vy - g * dt; // z方向速度更新
+					
 					if (y < -H + r) { // 物体が下床に当たったとき、
 						y = -H + r;
+						vy = 0.0001;
 					} //zは床にめり込んでいるので-hに修正
 
 					if (x < -W + r) { // 物体が左壁に当たったとき、
@@ -148,9 +149,45 @@ int main(int Number) {
 						x = W - r;
 					} //zは左にめり込んでいるので-wに修正
 
+					if (count > 1) {
+						// 衝突判定と衝突後の挙動
+						for (int i = 1; i < count; i++) {
+							double dx = x - balls[i].x;
+							double dy = y - balls[i].y;
+							double distanceSquared = dx * dx + dy * dy; // 距離の2乗
 
+							double sumRadiiSquared = (r + balls[i].r) * (r + balls[i].r); // 半径の和の2乗
 
+							if (distanceSquared < sumRadiiSquared) { // 衝突判定
+								// 衝突時の処理
+								//Printf("color = %d\n", balls[i].color);
+								//Printf("distanceSquared=%f,sumRadiiSquared=%f\n", distanceSquared, sumRadiiSquared);
+								//pp = (1 + e) * (balls[i].vx - vx);
+								//vx = vx + m / (m + m) * pp;    //球０の衝突後速度更新
+								//vy = vy - m / (m + m) * pp;    //球０の衝突後速度更新
+								vy = vy * e;
+								balls[i].vx = balls[i].vx - m / (m + m) * pp;    //球１の衝突後速度更新
+								balls[i].vy = balls[i].vy - m / (m + m) * pp;    //球１の衝突後速度更新
+								//Plot_pen(0, 2, color); //緑色に指定
+								//Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
+								//Plot_pen(0, 2, balls[i].color); //赤色に指定
+								//Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), 1);
+								//// 速度ベクトルの線型変換と交換
+								//double tempVx = vx;
+								//double tempVy = vy;
 
+								//vx = balls[i].vx;
+								//vy = balls[i].vy;
+
+								//balls[i].vx = tempVx;
+								//balls[i].vy = tempVy;
+
+								if (fabs(vy) < 1) vy = 0.0001; // 速度が小さくなったら0にする
+								
+							}
+						}
+					}
+					
 					Plot_pen(0, 2, color); //緑色に指定
 					Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
 					Refresh();  //画面更新
@@ -179,7 +216,7 @@ int main(int Number) {
 
 
 				//Printf("color = %d\n", balls[color].color);
-				found = 0;
+				
 				Plot_pen(0, 2, 1);
 				Line(0, sGW.w - 650, sGW.w, sGW.w - 650); //デッドライン
 
@@ -189,39 +226,9 @@ int main(int Number) {
 				balls[count].vy = vy;
 				balls[count].r = r;
 				balls[count].color = color;
-
-				Printf("color = %d\n", balls[3].color);
-				// 衝突判定と衝突後の挙動
-				for (int i = 0; i < count; i++) {
-					double dx = x - balls[i].x;
-					double dy = y - balls[i].y;
-					double distanceSquared = dx * dx + dy * dy; // 距離の2乗
-
-					double sumRadiiSquared = (r + balls[i].r) * (r + balls[i].r); // 半径の和の2乗
-
-					if (distanceSquared <= sumRadiiSquared) { // 衝突判定
-						// 衝突時の処理
-
-						pp = (1 + e) * (balls[i].vx - vx);
-						vx = vx + m / (m + m) * pp;    //球０の衝突後速度更新
-						vy = vy + m / (m + m) * pp;    //球０の衝突後速度更新
-						balls[i].vx = balls[i].vx - m / (m + m) * pp;    //球１の衝突後速度更新
-						balls[i].vy = balls[i].vy - m / (m + m) * pp;    //球１の衝突後速度更新
-						Plot_pen(0, 2, color); //緑色に指定
-						Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
-						Plot_pen(0, 2, balls[i].color); //赤色に指定
-						Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), 1);
-						// 速度ベクトルの線型変換と交換
-						double tempVx = vx;
-						double tempVy = vy;
-
-						vx = balls[i].vx;
-						vy = balls[i].vy;
-
-						balls[i].vx = tempVx;
-						balls[i].vy = tempVy;
-					}
-				}
+				found = 0;
+				
+				
 
 
 			}
