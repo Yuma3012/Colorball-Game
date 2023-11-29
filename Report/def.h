@@ -300,8 +300,8 @@ void component(){
 	sGW.x=MERGIN_W;								//グラフィックウィンドウの左上X座標
 	sGW.y=MERGIN_W*2+BTWIN_H					//グラフィックウィンドウの左上Y座標	20*2+50+37*0
 		+(MERGIN_C+EDBOX_H)*ED_NUM;		
-	sGW.w=MAINWIN_W-MERGIN_W*2;					//グラフィックウインドウの幅1000-40 960
-	sGW.h=MAINWIN_H-sGW.y-MERGIN_W*2;			//グラフィックウインドウの高さ750-90-20*2=620
+	sGW.w=MAINWIN_W-MERGIN_W*3;					//グラフィックウインドウの幅1000-40 960
+	sGW.h=MAINWIN_H-sGW.y-MERGIN_W*3;			//グラフィックウインドウの高さ750-90-20*2=620
 	lstrcpy(sGW.name,TEXT(""));
 }
 

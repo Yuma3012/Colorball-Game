@@ -33,11 +33,11 @@ struct Ball {
 struct Ball balls[MAX_BALLS]; // 玉の配列(グローバル変数)
 int main(int Number) {
 	int m = 10, n, mm = 0, nn = 0, start_x = sGW.w / 2 * (0 / 100 + 1), start_y = sGW.h / 10;
-	double x = 0, y = 90, w = 100, h = 100, real_r, xx = x, yy = y;//過去の座標
+	double x = 0, y = 80, w = 100, h = 100, real_r, xx = x, yy = y;//過去の座標
 	double vy=0, dt = 5e-3, vx = 0;
 	double e = 0, pp = 0; //反発係数は0
 	int resetScreen = 0; // 画面をリセットするフラグ
-	int found = 0;
+	int found = 0, found2;
 
 	// 色と値のペアを配列に格納
 	struct ColorValue colorValues[] = {
@@ -67,7 +67,7 @@ int main(int Number) {
 	count++; // Increment count on each iteration
 	//Printf("count = %d\n", count);
 	//物体の速度vyが1より小さくなるまでループ
-	while(fabs(vy) > 0.01 or vy == 0) {
+	while(fabs(vy) > 0.01 or vy == 0 ) {
 
 
 		//case1の処理がおわったらcase0の処理をおこなう
@@ -95,7 +95,7 @@ int main(int Number) {
 			Circle(x2m(xx - r), y2n(yy - r), x2m(xx + r), y2n(yy + r), 1);        //過去の位置に描かれた円を消去
 
 			Plot_pen(0, 2, 1);
-			Line(0, sGW.w - 650, sGW.w, sGW.w - 650); //デッドライン
+			Line(x2m(-W), y2n(H - 10), x2m(W), y2n(H-10)); //デッドライン
 			if (pl < 0) {
 				x = x - 0.1;     //左キーが押されたときの処理
 				if (x < -W + r) { // 物体が左壁に当たったとき
@@ -218,7 +218,7 @@ int main(int Number) {
 				//Printf("color = %d\n", balls[color].color);
 				
 				Plot_pen(0, 2, 1);
-				Line(0, sGW.w - 650, sGW.w, sGW.w - 650); //デッドライン
+				Line(x2m(-W), y2n(H - 10), x2m(W), y2n(H - 10));
 
 				balls[count].x = x;
 				balls[count].y = y;
@@ -237,9 +237,10 @@ int main(int Number) {
 			//
 			break;
 		case 1:
-			Plot_pen(0, 2, 1);  //白色に設定（バックと同じ）
+			Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
 			//Rect(-w, h, w, -h, 1);
-			Line(0, sGW.w - 650, sGW.w, sGW.w - 650); //デッドライン
+			Rect(x2m(-W), y2n(H), x2m(W), y2n(-H),1); //デッドライン
+			found2 = 0;
 			break;
 		}
 
