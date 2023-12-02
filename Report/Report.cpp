@@ -166,7 +166,7 @@ int main(int Number) {
 
 								if (fabs(dx) < fabs(dy) && x == balls[i].x) { //真上だったら
 									// 上側面の衝突
-									vy = -e * vy;
+									vy = 0.0001;
 									y = balls[i].y + balls[i].r + r + 0.1; // ボールの位置を調整
 								}
 								else if (fabs(dx) < fabs(dy) && y < balls[i].y) {
@@ -185,31 +185,21 @@ int main(int Number) {
 									x = balls[i].x - balls[i].r - r  - 0.1; // ボールの位置を調整
 								}
 								Refresh();
-								Printf("衝突\n");
+								//Printf("衝突\n");
 							}
 						}
 					}
-					
+				
+					if (y - r > H - 10) { //デッドラインに球の下部分が触れたら
+						Printf("GAME OVER\n");
+						break;
+					}
 					Plot_pen(0, 2, color); //緑色に指定
 					Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
 					Refresh();  //画面更新
 					xx = x;   //新しいピクセル座標を過去のピクセル座標にする
 					yy = y;   //新しいピクセル座標を過去のピクセル座標にする
 
-
-					//for (int i = 0; i < count; i++) {
-					//	if (fabs(x - balls[i].x) < r + balls[i].r ) {       //中心距離d玉同士がぶつかったとき
-					//		pp = (1 + e) * (balls[i].vx - vx);
-					//		vx = vx + m / (m + m) * pp;    //球０の衝突後速度更新
-					//		vy = vy + m / (m + m) * pp;    //球０の衝突後速度更新
-					//		balls[i].vx  = balls[i].vx - m / (m + m) * pp;    //球１の衝突後速度更新
-					//		balls[i].vy = balls[i].vy - m / (m + m) * pp;    //球１の衝突後速度更新
-					//		Plot_pen(0, 2, color); //緑色に指定
-					//		Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
-					//		Plot_pen(0, 2, balls[i].color); //赤色に指定
-					//		Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), 1);
-					//	}
-					//}
 
 
 
@@ -236,7 +226,8 @@ int main(int Number) {
 
 					
 				}
-				
+
+				Printf("count = %d\n", count);
 				
 
 
