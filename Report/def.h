@@ -9,7 +9,7 @@
 /**********************************/
 /*   Window Parameter Setting     */
 /**********************************/
-	#define PROGRAM_TITLE "ColorBall Game"   // Caption of Title bar
+	#define PROGRAM_TITLE "カラーボールゲーム"   // Caption of Title bar
 	#define MAINWIN_W	800	//Width of main window (in pixel)
 	#define MAINWIN_H	800		//Height of main window (in pixel)
 
@@ -215,17 +215,17 @@ void component(){
 	//for(i=0;i<PB_NUM;i++){
 	sPB[0].x=MERGIN_W+(BTWIN_W+MERGIN_C)*0;	//各ボタン左上のｘ座標
 	sPB[0].y=MERGIN_W;						//各ボタン左上のｙ座標
-	sPB[0].w=BTWIN_W;						//各ボタンの幅
+	sPB[0].w=BTWIN_W*2;						//各ボタンの幅
 	sPB[0].h=BTWIN_H;						//各ボタンの高さ
-	wsprintf(buf,TEXT("START"));
+	wsprintf(buf,TEXT("ネクスト"));
 	lstrcpy(sPB[0].name,buf);				//各ボタンのキャプション
 	//}
-	sPB[1].x = MERGIN_W + (BTWIN_W + MERGIN_C) * 1;	//各ボタン左上のｘ座標
-	sPB[1].y = MERGIN_W;						//各ボタン左上のｙ座標
-	sPB[1].w = BTWIN_W;						//各ボタンの幅
-	sPB[1].h = BTWIN_H;						//各ボタンの高さ
-	wsprintf(buf, TEXT("RESET"));
-	lstrcpy(sPB[1].name, buf);				//各ボタンのキャプション
+	//sPB[1].x = MERGIN_W + (BTWIN_W + MERGIN_C) * 1;	//各ボタン左上のｘ座標
+	//sPB[1].y = MERGIN_W;						//各ボタン左上のｙ座標
+	//sPB[1].w = BTWIN_W;						//各ボタンの幅
+	//sPB[1].h = BTWIN_H;						//各ボタンの高さ
+	//wsprintf(buf, TEXT("RESET"));
+	//lstrcpy(sPB[1].name, buf);				//各ボタンのキャプション
 
 	//チェックボックスの情報登録（iはチェックボックス番号に対応）
 	for(i=0;i<CK_NUM;i++){

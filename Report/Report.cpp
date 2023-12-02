@@ -32,19 +32,18 @@ struct Ball {
 };	
 struct Ball balls[MAX_BALLS]; // 玉の配列(グローバル変数)
 int main(int Number) {
-	int m = 10, n, mm = 0, nn = 0, start_x = sGW.w / 2 * (0 / 100 + 1), start_y = sGW.h / 10;
 	double x = 0, y = 80, w = 100, h = 100, real_r, xx = x, yy = y;//過去の座標
 	double vy=0, dt = 5e-3, vx = 0;
 	double e = 0, pp = 0; //反発係数は0
 	int resetScreen = 0; // 画面をリセットするフラグ
 	int found = 0, found2;
 
-	// 色と値のペアを配列に格納
+	// 色と値のペアを配列に格納　
 	struct ColorValue colorValues[] = {
 		//{2, 35}, //緑
 		//{0, 30}, //黒
 		//{1, 25}, //赤
-		//{3, 20}, //青ctrlk>ctrlc/uでコメントアウト
+		//{3, 20}, //青
 		{4, 15}, //黄色
 		{5, 10}, //水色
 		{6, 5}  //ピンク
@@ -64,24 +63,11 @@ int main(int Number) {
 
 	//球が下に当たったら処理を終了する
 // ラベルを使用してswitch内でループを制御する
-	count++; // Increment count on each iteration
+	count++; // 何週目かをカウント
 	//Printf("count = %d\n", count);
 	//物体の速度vyが1より小さくなるまでループ
 	while(fabs(vy) > 0.01 or vy == 0 ) {
 
-
-		//case1の処理がおわったらcase0の処理をおこなう
-
-		switch (Number) {
-		case 0:
-
-			//if (!resetScreen) {
-			//	Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
-			//	Rect(-w, h, w, -h, 1);
-			//}
-			//yが床につくまでループ
-			//Printf("sGW.h = %d", sGW.h);
-			//Printf("sGW.w = %d", sGW.w);
 
 			real_r = h * (sGW.h - 2 * r) / sGW.h; //ボールの実際の半径
 			/*		Printf("real_r%f", real_r);*/
@@ -123,15 +109,13 @@ int main(int Number) {
 			if (pd < 0) {
 				found = 1;
 				vy = -20;
-				//Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
-				//Line(x2m(x), y2n(y), x2m(x), y2n(-H));
-				//Plot_pen(0, 2, color);  //緑色に指定   
-				//Circle(start_x - r, start_y - r, start_x + r, start_y + r, 1);        //新しい位置に円を描画m,nは円の中心座標
 			}
 
 			if (found == 1) {
-				real_r = h * (sGW.h - 2 * r) / sGW.h; //実座標に変換
+
 				while (fabs(vy) > 0.01 ) { //速度が1より小さくなるまでループ
+					Plot_pen(0, 4, 1);
+					Line(x2m(-W), y2n(H - 10), x2m(W), y2n(H - 10));//デッドライン
 					Plot_pen(0, 2, 7); //白色に設定（バックと同じ）
 					Circle(x2m(xx - r), y2n(yy - r), x2m(xx + r), y2n(yy + r), 1);        //過去の位置に描かれた円を消去
 					
@@ -222,7 +206,7 @@ int main(int Number) {
 									
 								}
 								else {
-									if (fabs(dx) < fabs(dy) && x == balls[i].x) { //真上だったら
+									if (fabs(dx) < fabs(dy) and x > -0.5* balls[i].r + balls[i].x and x < 0.5 * balls[i].r + balls[i].x) { //真上だったら
 										// 上側面の衝突
 										vy = 0.0001;
 										y = balls[i].y + balls[i].r + r + 0.001; // ボールの位置を調整
@@ -251,10 +235,7 @@ int main(int Number) {
 						}
 					}
 				
-					if (y - r > H - 10) { //デッドラインに球の下部分が触れたら
-						Printf("GAME OVER\n");
-						break;
-					}
+					
 					Plot_pen(0, 2, color); //緑色に指定
 					Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
 					Refresh();  //画面更新
@@ -263,18 +244,23 @@ int main(int Number) {
 
 
 					for (int i = 0; i < count; i++) {
+						
 						Plot_pen(0, 2, balls[i].color);
 						Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x + balls[i].r), y2n(balls[i].y + balls[i].r), 1);
 
+						
 
 					}
 					//Printf("x%d\n",x);
-
+					
 					
 
 				}
 
-
+				if (y - r > H - 20) { //デッドラインに球の下部分が触れたら
+					Printf("ゲームオーバー\n");
+					break;
+				}
 
 				//Printf("color = %d\n", balls[color].color);
 				
@@ -288,22 +274,15 @@ int main(int Number) {
 				balls[count].r = r;
 				balls[count].color = color;
 				found = 0;
-				Printf("score:%d\n", score);
+				Printf("スコア:%d\n", score);
 				
 				
 
 
 			}
 			Refresh();        //画面更新
-			//}
-			//
-			break;
-		case 1:
-			Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
-			Rect(x2m(-W), y2n(H), x2m(W), y2n(-H),1); //デッドライン
-			found2 = 0;
-			break;
-		}
+			
+		
 
 	}
 }
