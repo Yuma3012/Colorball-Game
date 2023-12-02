@@ -7,7 +7,7 @@
 #define H 100
 #define g 9.8
 #define MAX_BALLS 100
-int count;
+int count, score;
 int x2m(double x) {//ピクセル座標への変換
 	return sGW.w / 2 * (1 + x / W);
 }
@@ -41,9 +41,9 @@ int main(int Number) {
 
 	// 色と値のペアを配列に格納
 	struct ColorValue colorValues[] = {
-		//{0, 35}, //黒
-		//{1, 30}, //赤
-		//{2, 25}, //緑
+		//{2, 35}, //緑
+		//{0, 30}, //黒
+		//{1, 25}, //赤
 		//{3, 20}, //青ctrlk>ctrlc/uでコメントアウト
 		{4, 15}, //黄色
 		{5, 10}, //水色
@@ -122,7 +122,7 @@ int main(int Number) {
 
 			if (pd < 0) {
 				found = 1;
-				vy = 1;
+				vy = -20;
 				//Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
 				//Line(x2m(x), y2n(y), x2m(x), y2n(-H));
 				//Plot_pen(0, 2, color);  //緑色に指定   
@@ -131,11 +131,13 @@ int main(int Number) {
 
 			if (found == 1) {
 				real_r = h * (sGW.h - 2 * r) / sGW.h; //実座標に変換
-				while (fabs(vy) > 0.01) { //速度が1より小さくなるまでループ
+				while (fabs(vy) > 0.01 ) { //速度が1より小さくなるまでループ
 					Plot_pen(0, 2, 7); //白色に設定（バックと同じ）
 					Circle(x2m(xx - r), y2n(yy - r), x2m(xx + r), y2n(yy + r), 1);        //過去の位置に描かれた円を消去
-					y = y + vy * dt - g * dt * dt / 2;  //  z座標更新
-					vy = vy - g * dt;         //  z方向速度更新
+					
+					vy = vy - g * dt;         //  y方向速度更新
+					y = y + vy * dt - g * dt * dt / 2;  //  y座標更新
+					x = x + vx * dt;         //  x座標更新
 					
 					if (y < -H + r) { // 物体が下床に当たったとき、
 						y = -H + r;
@@ -163,26 +165,85 @@ int main(int Number) {
 							double sumRadiiSquared = (r + balls[i].r) * (r + balls[i].r); // 半径の和の2乗
 
 							if (distanceSquared < sumRadiiSquared) {
+								if (color == balls[i].color) {
+									Plot_pen(0, 2, 7); //白色に設定（バックと同じ）
+									Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);        //過去の位置に描かれた円を消去
+									Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x + balls[i].r), y2n(balls[i].y + balls[i].r), 1);
+									double half_x = (x + balls[i].x) / 2;
+									double half_y = (y + balls[i].y) / 2;
+									
+									switch (color) {
+									case 6:
+										color = 5;
+										r = 10;
+										score = score + 1;
+										break;
+									case 5:
+										color = 4;
+										r = 15;
+										score = score + 3;
+										break;
+									case 4:
+										color = 3;
+										r = 20;
+										score = score + 10;
+										break;
+									case 3:
+										color = 1;
+										r = 25;
+										score = score + 20;
+										break;
+									case 1:
+										color = 0;
+										r = 30;
+										score = score + 35;
+										break;
+									case 0:
+										color = 2;
+										r = 35;
+										score = score + 45;
+										break;
+									case 2:
+										color = 6;
+										r = 5;
+										score = score + 55;
+										//half_x = -10000;
+										//half_y = -10000;
+										break;
 
-								if (fabs(dx) < fabs(dy) && x == balls[i].x) { //真上だったら
-									// 上側面の衝突
-									vy = 0.0001;
-									y = balls[i].y + balls[i].r + r + 0.1; // ボールの位置を調整
+									}
+
+									x = half_x;
+									y = half_y;
+									balls[i].x = -5000;
+                                    balls[i].y = -5000; //衝突したボールを画面外に移動
+									Plot_pen(0, 2, color); 
+									Circle(x2m(half_x - r), y2n(half_y - r), x2m(half_x + r), y2n(half_y + r), 1);        //中間地点に円を描画
+									
 								}
-								else if (fabs(dx) < fabs(dy) && y < balls[i].y) {
-									// 下側面の衝突
-									vy = -e * vy;
-									y = balls[i].y - balls[i].r - r - 0.1; // ボールの位置を調整
-								}
-								else if ( x > balls[i].x) {
-									// 右側面の衝突
-									vx = -e * vx;
-									x = balls[i].x + balls[i].r + r + 0.1; // ボールの位置を調整
-								}
-								else if ( x < balls[i].x) {
-									// 左側面の衝突
-									vx = -e * vx;
-									x = balls[i].x - balls[i].r - r  - 0.1; // ボールの位置を調整
+								else {
+									if (fabs(dx) < fabs(dy) && x == balls[i].x) { //真上だったら
+										// 上側面の衝突
+										vy = 0.0001;
+										y = balls[i].y + balls[i].r + r + 0.001; // ボールの位置を調整
+									}
+									else if (fabs(dx) < fabs(dy) && y < balls[i].y) {
+										// 下側面の衝突
+										vy = -e * vy;
+										y = balls[i].y - balls[i].r - r - 0.001; // ボールの位置を調整
+									}
+									else if (x > balls[i].x) {
+										// 右側面の衝突
+										vx = 2;
+										x = balls[i].x + balls[i].r + r + 0.001; // ボールの位置を調整
+										//y = balls[i].y + balls[i].r + r - 0.1; // ボールの位置を調整
+									}
+									else if (x < balls[i].x) {
+										// 左側面の衝突
+										vx = -2;
+										x = balls[i].x - balls[i].r - r - 0.001; // ボールの位置を調整
+										//y = balls[i].y + balls[i].r + r - 0.1; // ボールの位置を調整
+									}
 								}
 								Refresh();
 								//Printf("衝突\n");
@@ -201,7 +262,15 @@ int main(int Number) {
 					yy = y;   //新しいピクセル座標を過去のピクセル座標にする
 
 
+					for (int i = 0; i < count; i++) {
+						Plot_pen(0, 2, balls[i].color);
+						Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x + balls[i].r), y2n(balls[i].y + balls[i].r), 1);
 
+
+					}
+					//Printf("x%d\n",x);
+
+					
 
 				}
 
@@ -219,15 +288,8 @@ int main(int Number) {
 				balls[count].r = r;
 				balls[count].color = color;
 				found = 0;
-
-				for (int i = 0; i < count; i++) {
-					Plot_pen(0, 2, balls[i].color);
-					Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x + balls[i].r), y2n(balls[i].y + balls[i].r), 1);
-
-					
-				}
-
-				Printf("count = %d\n", count);
+				Printf("score:%d\n", score);
+				
 				
 
 
