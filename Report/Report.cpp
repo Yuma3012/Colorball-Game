@@ -93,9 +93,11 @@ int main(int Number) {
 
 			Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
 			Circle(x2m(xx - r), y2n(yy - r), x2m(xx + r), y2n(yy + r), 1);        //過去の位置に描かれた円を消去
-
-			Plot_pen(0, 2, 1);
+			//Line(x2m(xx), y2n(yy), x2m(xx), y2n(-H)); // 落下ライン
+			Plot_pen(0, 4, 1);
 			Line(x2m(-W), y2n(H - 10), x2m(W), y2n(H-10)); //デッドライン
+			//Plot_pen(2, 1, 1);
+			//Line(x2m(x), y2n(y), x2m(x), y2n(-H));
 			if (pl < 0) {
 				x = x - 0.1;     //左キーが押されたときの処理
 				if (x < -W + r) { // 物体が左壁に当たったとき
@@ -121,6 +123,8 @@ int main(int Number) {
 			if (pd < 0) {
 				found = 1;
 				vy = 1;
+				//Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
+				//Line(x2m(x), y2n(y), x2m(x), y2n(-H));
 				//Plot_pen(0, 2, color);  //緑色に指定   
 				//Circle(start_x - r, start_y - r, start_x + r, start_y + r, 1);        //新しい位置に円を描画m,nは円の中心座標
 			}
@@ -158,32 +162,30 @@ int main(int Number) {
 
 							double sumRadiiSquared = (r + balls[i].r) * (r + balls[i].r); // 半径の和の2乗
 
-							if (distanceSquared < sumRadiiSquared) { // 衝突判定
-								// 衝突時の処理
-								//Printf("color = %d\n", balls[i].color);
-								//Printf("distanceSquared=%f,sumRadiiSquared=%f\n", distanceSquared, sumRadiiSquared);
-								//pp = (1 + e) * (balls[i].vx - vx);
-								//vx = vx + m / (m + m) * pp;    //球０の衝突後速度更新
-								//vy = vy - m / (m + m) * pp;    //球０の衝突後速度更新
-								vy = vy * e;
-								balls[i].vx = balls[i].vx - m / (m + m) * pp;    //球１の衝突後速度更新
-								balls[i].vy = balls[i].vy - m / (m + m) * pp;    //球１の衝突後速度更新
-								//Plot_pen(0, 2, color); //緑色に指定
-								//Circle(x2m(x - r), y2n(y - r), x2m(x + r), y2n(y + r), 1);
-								//Plot_pen(0, 2, balls[i].color); //赤色に指定
-								//Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), 1);
-								//// 速度ベクトルの線型変換と交換
-								//double tempVx = vx;
-								//double tempVy = vy;
+							if (distanceSquared < sumRadiiSquared) {
 
-								//vx = balls[i].vx;
-								//vy = balls[i].vy;
-
-								//balls[i].vx = tempVx;
-								//balls[i].vy = tempVy;
-
-								if (fabs(vy) < 1) vy = 0.0001; // 速度が小さくなったら0にする
-								
+								if (fabs(dx) < fabs(dy) && x == balls[i].x) { //真上だったら
+									// 上側面の衝突
+									vy = -e * vy;
+									y = balls[i].y + balls[i].r + r + 0.1; // ボールの位置を調整
+								}
+								else if (fabs(dx) < fabs(dy) && y < balls[i].y) {
+									// 下側面の衝突
+									vy = -e * vy;
+									y = balls[i].y - balls[i].r - r - 0.1; // ボールの位置を調整
+								}
+								else if ( x > balls[i].x) {
+									// 右側面の衝突
+									vx = -e * vx;
+									x = balls[i].x + balls[i].r + r + 0.1; // ボールの位置を調整
+								}
+								else if ( x < balls[i].x) {
+									// 左側面の衝突
+									vx = -e * vx;
+									x = balls[i].x - balls[i].r - r  - 0.1; // ボールの位置を調整
+								}
+								Refresh();
+								Printf("衝突\n");
 							}
 						}
 					}
@@ -217,7 +219,7 @@ int main(int Number) {
 
 				//Printf("color = %d\n", balls[color].color);
 				
-				Plot_pen(0, 2, 1);
+				Plot_pen(0, 4, 1);
 				Line(x2m(-W), y2n(H - 10), x2m(W), y2n(H - 10));
 
 				balls[count].x = x;
@@ -227,6 +229,13 @@ int main(int Number) {
 				balls[count].r = r;
 				balls[count].color = color;
 				found = 0;
+
+				for (int i = 0; i < count; i++) {
+					Plot_pen(0, 2, balls[i].color);
+					Circle(x2m(balls[i].x - balls[i].r), y2n(balls[i].y - balls[i].r), x2m(balls[i].x + balls[i].r), y2n(balls[i].y + balls[i].r), 1);
+
+					
+				}
 				
 				
 
@@ -238,7 +247,6 @@ int main(int Number) {
 			break;
 		case 1:
 			Plot_pen(0, 2, 7);  //白色に設定（バックと同じ）
-			//Rect(-w, h, w, -h, 1);
 			Rect(x2m(-W), y2n(H), x2m(W), y2n(-H),1); //デッドライン
 			found2 = 0;
 			break;
