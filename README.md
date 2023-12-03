@@ -8,7 +8,9 @@ Color Ball Game runs on Windows with GUI
 
 # Features
 
-"hoge"のセールスポイントや差別化などを説明する
+This game was created for the purpose of improving my programming skills with reference to the "スイカゲーム" by popIn, Inc.  
+This game is for non-profit purposes and is not intended for secondary distribution or distribution,  
+and there is no intention of infringing on the rights of the original creator.
 
 # Requirement
 
@@ -27,24 +29,29 @@ Color Ball Game runs on Windows with GUI
 # Usage
 
 ■ Operation 
-[Click <next> button]: Display new ball 
-[A]: Move ball left 
-[D]: Move ball right 
-[S]: Drop ball 
-━━━━━━━━━━━━━━━━━━━━ 
-■ How to play the game ＜Evolution order of balls and score table＞ - Press <next> button to display the ball. Press <next> button to display the ball. The newly displayed balls are randomly selected from the three smallest (pink, light blue, yellow).
-Score pink light blue + 3 yellow + 5 blue + 10 red + 20 black + 30 green + 40 pink + 55 light blue + 3 (...and the following loop)
-The ball is moved to the left or right and dropped at the desired position. When balls of different colors collide, they reflect. When balls of the same color collide, the two balls disappear and a larger ball is created, and the score is added. When the <next> button is pressed again, another ball is displayed. The game is over and the game is reset when either ball hits the red dead line at the top of the screen after falling.
+[Click <ネクスト> button]: Display new ball  
+[A]: Move ball left  
+[D]: Move ball right  
+[S]: Drop ball  
+━━━━━━━━━━━━━━━━━━━━  
+■ How to play the game  
+Press <ネクスト> button to display the ball.  
+The newly displayed balls are randomly selected from the three smallest (pink, light blue, yellow).  
+The ball is moved to the left or right and dropped at the desired position.  
+When balls of different colors collide, they reflect. When balls of the same color collide,  
+the two balls disappear and a larger ball is created, and the score is added.  
+When the <next> button is pressed again, another ball is displayed.  
+The game is over and the game is reset when either ball hits the red dead line at the top of the screen after falling.
 
 # Note
+Q.The ball dips and makes unintended movements.  
+A. We plan to fix this in a future update (timing to be determined),  
+but we hope you will enjoy the game with a warm eye,  
+as the irregular movement of the ball and the happening nature of the game can be considered attractive.
 
-注意点などがあれば書く
 
 # Author
 
-作成情報を列挙する
-
-* 作成者
-* 所属
-* E-mail
+* Author: Y.K
+* E-mail: try.ykobayashi@gmail.com
 
