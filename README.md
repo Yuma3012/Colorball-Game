@@ -4,8 +4,7 @@ Color Ball Game runs on Windows with GUI
 
 # DEMO
 
-"hoge"の魅力が直感的に伝えわるデモ動画や図解を載せる
-
+![demo](https://raw.github.com/wiki/Yuma3012/Report/img/Colorballgame.gif)
 # Features
 
 This game was created for the purpose of improving my programming skills with reference to the "スイカゲーム" by popIn, Inc.  
