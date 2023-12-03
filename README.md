@@ -1,47 +1,50 @@
-# Report
-カラーボールゲーム 説明書
-(C)2023 Yuma Kobayashi 
+# Colorball Game
+
+Color Ball Game runs on Windows with GUI
+
+# DEMO
+
+"hoge"の魅力が直感的に伝えわるデモ動画や図解を載せる
+
+# Features
+
+"hoge"のセールスポイントや差別化などを説明する
+
+# Requirement
+
+
+
+* OS:Windows 11
+* Visual studio
+
+# Installation
+
+(1) Select "Desktop Development with C++" to install and start Visual Studio.  
+(2)Create a new project, and after selecting "Windows Desktop Wizard", create a folder in any location and select "Desktop Application" and "Empty Project".  
+(3)Place Report.cpp in the header file and def.h and mlib.h in the source file.  
+(4)Click "Local Windows Debugger" to start the game. When you exit, click the stop button on the right side of "Local Windows Debugger" instead of the x button on the tab.  
+
+# Usage
+
+■ Operation 
+[Click <next> button]: Display new ball 
+[A]: Move ball left 
+[D]: Move ball right 
+[S]: Drop ball 
 ━━━━━━━━━━━━━━━━━━━━ 
-■ゲームの概要 
-【ゲーム制作者 】小林雄馬 
-【お問い合わせ 】t200d050@gunma-u.ac.jp 
-【ゲームタイトル】カラーボールゲーム 
-【動作環境 】Windows 
-【ジャンル 】パズル 
-【特徴 】ドット絵/教育 
-【難易度 】簡単 【プレイ時間 】3分～ 
-【推奨年齢 】3歳以上 
-【種別 】フリーウェア
-このゲームはフィクションです。 
-実在の人物、団体、事件等とは一切関係ありません。 また、犯罪や殺生を助長する意図はありません。
-＊本ゲームは、popIn株式会社の「スイカゲーム」を参考に、自身のプログラミングスキルの向上を目的に制作いたしました。
-非営利目的であり、二次配布、配信等を行う予定はなく、本家様の権利等を侵害する意図は一切ございません。 
-■起動方法 ①「C++によるデスクトップ開発」を選択してVisual Studio をインストールし、起動する。
-②新規プロジェクトを作成し、「Windowsデスクトップウィザード」を選択後、任意の場所にフォルダを作成し、「デスクトップアプリケーション」「空のプロジェクト」を選択する。
-③ヘッダーファイルにReport.cpp、ソースファイルにdef.h、mlib.hを配置する。 
-④「ローカルWindowsデバッガー」をクリックしてゲーム開始。
-終了時はタブの×ボタンではなく「ローカルWindowsデバッガー」の右側の停止ボタンをクリック。
-■操作方法
-[<ネクスト>ボタンをクリック]：新しいボールを表示
-[A]：ボールを左に移動 
-[D]：ボールを右に移動 
-[S]：ボールを落下 
-━━━━━━━━━━━━━━━━━━━━
-■ゲーム攻略方法 
-＜ボールの進化順・スコア表＞ 
-・<ネクスト>ボタンを押し、ボールを表示させる。 
-・新しく表示されるボールは小さい方から3つ(ピンク、水色、黄色)のいずれかランダム。
-ボールの進化順生成時のスコアピンク水色+3黄色+5青+10赤+20黒+30緑+40ピンク+55水色+3(…以下ループ)
-・ボールを左右に移動させ、好きな位置に落下させる。
-・異なる色のボールが衝突すると、反射する。 
-・同じ色のボールが衝突すると2つのボールは対消滅し、一回り大きいボールが生成され、スコアが加算される。
-・再度<ネクスト>ボタンを押すと別のボールを表示させる。
-・ボール落下後に上部の赤いデッドラインといずれかのボールの上部分が当たったらゲームオーバーとなり、リセット。 
-━━━━━━━━━━━━━━━━━━━━
-■更新履歴 2023年/12月/5日
-[ゲームの初公開]
-■Q&A・お問い合わせ Q.ボールがめり込む、意図しない動きをする。
-A.今後のアップデート(時期は未定)で修正予定ですが、ボールの不規則な動き、
-ハプニング性が魅力ともいえますので、温かい目でお楽しみいただけたらと思います。 
-お問合せはこちら↓ t200d050@gunma-u.ac.jp
-━━━━━━━━━━━━━━━━━━━━
+■ How to play the game ＜Evolution order of balls and score table＞ - Press <next> button to display the ball. Press <next> button to display the ball. The newly displayed balls are randomly selected from the three smallest (pink, light blue, yellow).
+Score pink light blue + 3 yellow + 5 blue + 10 red + 20 black + 30 green + 40 pink + 55 light blue + 3 (...and the following loop)
+The ball is moved to the left or right and dropped at the desired position. When balls of different colors collide, they reflect. When balls of the same color collide, the two balls disappear and a larger ball is created, and the score is added. When the <next> button is pressed again, another ball is displayed. The game is over and the game is reset when either ball hits the red dead line at the top of the screen after falling.
+
+# Note
+
+注意点などがあれば書く
+
+# Author
+
+作成情報を列挙する
+
+* 作成者
+* 所属
+* E-mail
+
