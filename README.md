@@ -4,7 +4,7 @@ Color Ball Game runs on Windows with GUI
 
 # DEMO
 
-![demo](https://raw.github.com/wiki/Yuma3012/Report/img/Colorballgame.gif)
+![demo]<img src="img/Colorballgame.gif" width="400">
 # Features
 
 This game was created for the purpose of improving my programming skills with reference to the "スイカゲーム" by popIn, Inc.  
